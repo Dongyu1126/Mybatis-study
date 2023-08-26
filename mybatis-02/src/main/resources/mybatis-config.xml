@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF8" ?>
+<!--这个程序配置文件必须要符合规范，否则必报错-->
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+    <!--典型的 Java 属性配置文件,原则优先外部配置文件，然后内部-->
+    <properties resource="">
+    </properties>
+
+    <!--<settings>
+        <setting name="logImpl" value="STDOUT_LOGGING"/>&lt;!&ndash;开启日志工厂&ndash;&gt;
+    </settings>-->
+    <!--可以给实体类起别名-->
+    <typeAliases>
+        <!--<typeAlias alias="User" type="com.kuang.pojo.User"/>-->
+        <package name="hhh.com.kuang.pojo"/>   <!--可以扫描包里面的所有包名，用其中包名的首字母小写作为别名，其实首字母大写也能用-->
+    </typeAliases>
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"></transactionManager><!--事务管理器有两种，type="[JDBC|MANAGED]"mybatis默认的jdbc-->
+            <dataSource type="POOLED"><!--数据源一共有3种，mybatis默认连接池是POOLED，用完后下一个还能用-->
+                <property name="driver" value="com.mysql.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://localhost:3306/mybatis?useSSL=true&amp;useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=GMT"/>
+                <property name="username" value="root"/>
+                <property name="password" value="root"/>
+            </dataSource>
+
+        </environment>
+    </environments>
+
+    <!--每一个Mapper.XML都需要在Mybatis核心配置文件中注册！-->
+    <!--resource这个路径必须是斜杠-->
+    <mappers>
+        <mapper class="hhh.dao.StudentMapper"/>
+        <mapper class="hhh.dao.TeacherMapper"/>
+    </mappers>
+
+<!--    <mappers>
+        <mapper class="dao.UserDao"/>
+    </mappers> 这个是绑定接口的作用，有了它就可在接口中直接加注解-->
+
+</configuration>

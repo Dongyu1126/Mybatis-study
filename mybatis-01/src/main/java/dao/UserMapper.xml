@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--写这个Mapper文件是为了代替原来的实现类（xml映射文件）-->
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace（命名空间）=绑定一个对应的Dao/Mapper接口，要与接口所在的包名一致，命名空间现在更加重要了-->
+<mapper namespace="dao.UserDao">
+
+    <select id="getUserLike" resultType="user"><!---->
+        <!--select * from mybatis.user where name like 1 or 2=2 这直接sql注入了-->
+        <!--select * from mybatis.user where name like "%"#{value}"%" 这种在test类中什么都不输入就会出现所有结果，直接sql注入了-->
+        select * from mybatis.user where name like "%"#{value}"%"
+    </select>
+
+    <!--id对应namespace中的方法名，resultType是sql语句返回值，select查询语句，parameterType参数类型-->
+    <select id="getUserList" resultType="com.kuang.pojo.User">
+        select * from mybatis.user
+    </select>
+
+
+    <!--<resultMap id="UserMap"  type="User">
+    <result property="pwd" column="passwprd">
+    </resultMap>-->
+    <!--property是实体类里的名字 ，column是数据库名字的别名 -->
+    <select id="getUserById" parameterType="int" resultType="com.kuang.pojo.User">
+    <!--若数据库中的列名和实体类属性名不一致,数据库中是pwd实体类里面是password，用resultMap="UserMap"-->
+        select * from mybatis.user where id=#{id}
+    </select>
+
+    <!--map类型-->
+    <select id="getUserById2" parameterType="map" resultType="com.kuang.pojo.User">
+        select * from mybatis.user where id=#{jiangdongyuid}
+    </select>
+    <!--#{}的作用是为了防止恶意注入-->
+    <!--接下来三个是增删改-->
+    <insert id="addUser" parameterType="com.kuang.pojo.User" >
+        insert into mybatis.user(id,name,password) values(#{id},#{name},#{password})
+    </insert>
+
+    <update id="updateUser" parameterType="com.kuang.pojo.User" >
+        update mybatis.user set name=#{name},password=#{password} where id =#{id}
+    </update>
+
+    <delete id="deleteUser" parameterType="com.kuang.pojo.User">
+        delete from mybatis.user where id=#{id}
+    </delete>
+
+    <select id="getUserByLimit" parameterType="map" resultType="user">
+        select * from mybatis.user limit #{startIndex},#{pageSize}
+    </select>
+</mapper>

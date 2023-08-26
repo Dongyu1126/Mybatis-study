@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF8" ?>
+<!--这个程序配置文件必须要符合规范，否则必报错-->
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="dao.BlogMapper">
+
+    <!--parameterType="blog"这里面是数据库里面的表名-->
+    <insert id="addBlog" parameterType="blog">
+        insert into mybatis.blog(id,title,author,create_time,views) values       <!--这是数据库里面的参数-->
+        (#{id},#{title},#{author},#{createTime},#{views});             <!--这是我们Blog里定义的参数-->
+    </insert>
+
+    <!--=================================动态Sql中的 IF 语句======================================-->
+    <select id="queryBlogIF" parameterType="map" resultType="Blog"><!--resultType不能少对应的是实体类，因为要有返回结果-->
+        select * from mybatis.blog where 1=1
+        <if test="title != null">
+            and title = #{title}
+        </if>
+        <if test="author != null">
+            and author = #{author}
+        </if>
+    </select>
+</mapper>
